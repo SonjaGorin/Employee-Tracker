@@ -61,6 +61,24 @@ const addDepartment = async () => {
     });
 };
 
-
+const addRole = async () => {
+    const newRole = await inquirer.prompt (
+        {
+            name: "newRoleTitle",
+            type: "input",
+            message: "What's the name of the role title you would like to add?"
+        },
+        {
+            name: "newSalary",
+            type: "input",
+            message: "What is the salary for this role?"
+        },
+        {
+            name: "department",
+            type: "list",
+            message: "Choose the department for this role:"
+        }
+    );
+};
 
 questions()

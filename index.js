@@ -14,8 +14,10 @@ const questions = async () => {
             await viewAllDepartments();
             break;
         case "View all roles":
+            await viewAllRoles();
             break;
         case "View all employees":
+            await viewAllEmployees();
             break;
         case "Add a department":
             break;
@@ -31,6 +33,16 @@ const questions = async () => {
 const viewAllDepartments = async () => {
     const departments = await query("SELECT * FROM department");
     console.log(departments);
+};
+
+const viewAllRoles = async () => {
+    const roles = await query("SELECT * FROM role");
+    console.log(roles);
+};
+
+const viewAllEmployees = async () => {
+    const employees = await query("SELECT * FROM employee");
+    console.log(employees);
 };
 
 questions()

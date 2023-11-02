@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const query = require("./server.js");
+const { printTable } = require("console-table-printer");
 
 const questions = async () => {
     const options = await inquirer.prompt (
@@ -28,21 +29,22 @@ const questions = async () => {
         case "Update an employee role":
             break;
     }
+    questions();
 };
 
 const viewAllDepartments = async () => {
     const departments = await query("SELECT * FROM department");
-    console.log(departments);
+    printTable(departments);
 };
 
 const viewAllRoles = async () => {
     const roles = await query("SELECT * FROM role");
-    console.log(roles);
+    printTable(roles);
 };
 
 const viewAllEmployees = async () => {
     const employees = await query("SELECT * FROM employee");
-    console.log(employees);
+    printTable(employees);
 };
 
 questions()

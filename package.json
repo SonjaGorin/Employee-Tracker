@@ -10,6 +10,7 @@
     "license": "ISC",
     "dependencies": {
       "inquirer": "8.2.4",
-      "mysql2": "^2.2.5"
+      "mysql2": "^2.2.5",
+      "console-table-printer": "2.11.2"
     }
   }

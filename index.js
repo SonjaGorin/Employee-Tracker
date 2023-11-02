@@ -24,6 +24,7 @@ const questions = async () => {
             await addDepartment();
             break;
         case "Add a role":
+            await addRole();
             break;
         case "Add an employee":
             break;
@@ -39,12 +40,23 @@ const viewAllDepartments = async () => {
 };
 
 const viewAllRoles = async () => {
-    const roles = await query("SELECT * FROM roles");
+    const roles = await query(`
+        SELECT role.id, role.title, role.salary, department.name AS department
+        FROM role
+        INNER JOIN department ON role.department_id = department.id
+    `);
     printTable(roles);
 };
 
 const viewAllEmployees = async () => {
-    const employees = await query("SELECT * FROM employees");
+    const employees = await query(`
+        SELECT emp.id, emp.first_name, emp.last_name, role.title, department.name AS department, role.salary,
+        CONCAT(mgr.first_name, " ", mgr.last_name) AS manager
+        FROM employee emp
+        LEFT JOIN employee mgr ON emp.manager_id = mgr.id
+        INNER JOIN department ON emp.id = department.id
+        INNER JOIN role ON emp.role_id = role.id 
+        `);
     printTable(employees);
 };
 
@@ -76,9 +88,18 @@ const addRole = async () => {
         {
             name: "department",
             type: "list",
-            message: "Choose the department for this role:"
+            message: "Choose the department for this role:",
+            choices: (department) => {
+                department.name
+            }
         }
     );
+    const newRoleAdded = await query("INSERT INTO roles SET ?", {
+        title: newRole.newRoleTitle,
+        salary: newRole.newSalary,
+        department: newRole.department
+    });
+
 };
 
 questions()

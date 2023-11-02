@@ -38,12 +38,12 @@ const viewAllDepartments = async () => {
 };
 
 const viewAllRoles = async () => {
-    const roles = await query("SELECT * FROM role");
+    const roles = await query("SELECT * FROM roles");
     printTable(roles);
 };
 
 const viewAllEmployees = async () => {
-    const employees = await query("SELECT * FROM employee");
+    const employees = await query("SELECT * FROM employees");
     printTable(employees);
 };
 

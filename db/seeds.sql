@@ -15,8 +15,11 @@ VALUES  ("Executive Officer", 85000, 1),
 
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES  ("Spencer", "Reid", 1, 3),
-        ("Penelope", "Garcia", 2, 3),
-        ("Aaron", "Hotchner", 3, null),
-        ("Jennifer", "Jareau", 4, 3),
+VALUES  ("Aaron", "Hotchner", 3, null);
+        
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES  ("Spencer", "Reid", 1, 1),
+        ("Penelope", "Garcia", 2, 1),
+        ("Jennifer", "Jareau", 4, 1),
         ("Jason", "Gideon", 5, null);

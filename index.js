@@ -21,6 +21,7 @@ const questions = async () => {
             await viewAllEmployees();
             break;
         case "Add a department":
+            await addDepartment();
             break;
         case "Add a role":
             break;
@@ -46,5 +47,20 @@ const viewAllEmployees = async () => {
     const employees = await query("SELECT * FROM employees");
     printTable(employees);
 };
+
+const addDepartment = async () => {
+    const newDepartment = await inquirer.prompt (
+        {
+            name: "newDepartmentInput",
+            type: "input",
+            message: "What's the name of the department you would like to add?"
+        }
+    );
+    const newDepartmentAdded = await query("INSERT INTO department SET ?", {
+        name: newDepartment.newDepartmentInput
+    });
+};
+
+
 
 questions()

@@ -1,7 +1,12 @@
+-- creating database
+
 DROP DATABASE IF EXISTS employee_tracker_db;
 CREATE DATABASE employee_tracker_db;
 
 USE employee_tracker_db;
+
+-- creating tables and table columns
+-- assigning primary and foreign keys
 
 CREATE TABLE department (
     id INTEGER NOT NULL AUTO_INCREMENT,

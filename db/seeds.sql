@@ -1,3 +1,5 @@
+-- values to insert into tables
+
 INSERT INTO department (name)
 VALUES  ("Communications"),
         ("Finance"),

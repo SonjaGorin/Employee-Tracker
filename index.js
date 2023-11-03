@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const query = require("./server.js");
+// package to display tables nicely
 const { printTable } = require("console-table-printer");
 
 const questions = async () => {
@@ -10,6 +11,7 @@ const questions = async () => {
         message: "Please choose an option from the following list:",
         choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role", "Quit"]
     });
+    // call functions depending on what user chose
     switch (options.options) {
         case "View all departments":
             await viewAllDepartments();
@@ -38,11 +40,14 @@ const questions = async () => {
     questions();
 };
 
+// showing department table in terminal
 const viewAllDepartments = async () => {
     const departments = await query("SELECT * FROM department");
     printTable(departments);
 };
 
+// showing role table in terminal
+// joining role and department tables
 const viewAllRoles = async () => {
     const roles = await query(`
         SELECT role.id, role.title, role.salary, department.name AS department
@@ -52,6 +57,8 @@ const viewAllRoles = async () => {
     printTable(roles);
 };
 
+// showing employee table in terminal
+// joining role, department and employee tables
 const viewAllEmployees = async () => {
     const employees = await query(`
         SELECT emp.id, emp.first_name, emp.last_name, role.title, department.name AS department, role.salary,
@@ -64,6 +71,7 @@ const viewAllEmployees = async () => {
     printTable(employees);
 };
 
+// adding new department
 const addDepartment = async () => {
     const newDepartment = await inquirer.prompt (
         {
@@ -78,6 +86,7 @@ const addDepartment = async () => {
     console.log(`Added ${newDepartment.newDepartmentInput} to the detabase.`)
 };
 
+// adding new role
 const addRole = async () => {
     const departments = await query("SELECT id, name FROM department")
     const departmentChoices = departments.map(
@@ -110,6 +119,7 @@ const addRole = async () => {
     console.log(`Added ${newRole.newRoleTitle} to the detabase.`)
 };
 
+// adding new employee
 const addEmployee = async () => {
     const roles = await query("SELECT id, title, salary, department_id FROM role");
     const roleChoices = roles.map(
@@ -155,6 +165,7 @@ const addEmployee = async () => {
     console.log(`Added ${newEmployee.newFirstName} ${newEmployee.newLastName} to the detabase.`)
 };
 
+// updating new employee
 const updateEmployeeRole = async () => {
     const employees = await query('SELECT id, CONCAT(employee.first_name, " ", employee.last_name) AS full_name FROM employee');
     const employeeChoices = employees.map(

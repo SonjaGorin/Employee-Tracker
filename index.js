@@ -108,6 +108,16 @@ const addRole = async () => {
 };
 
 const addEmployee = async () => {
+    const roles = await query("SELECT id, title, salary, department_id FROM role");
+    const roleChoices = roles.map(
+        role => ({value: role.id, name: role.title})
+    );
+
+    const employees = await query('SELECT id, CONCAT(employee.first_name, " ", employee.last_name) AS manager FROM employee');
+    const managerChoices = employees.map(
+        employee => ({value: employee.id, name: employee.manager})
+    );
+
     const newEmployee = await inquirer.prompt([
         {
             name: "newFirstName",
@@ -123,15 +133,22 @@ const addEmployee = async () => {
             name: "newRole",
             type: "list",
             message: "Choose the role for this employee:",
-            choices:
+            choices: roleChoices
         },
         {
             name: "newManager",
             type: "list",
             message: "Choose the manager for this employee:",
-            choices:
+            choices: managerChoices
         }
     ]);
+    await query("INSERT INTO employee SET ?", {
+        first_name: newEmployee.newFirstName,
+        last_name: newEmployee.newLastName,
+        role_id: newEmployee.newRole,
+        manager_id: newEmployee.newManager
+    });
+    console.log(`Added ${newEmployee.newFirstName} ${newEmployee.newLastName} to the detabase.`)
 }
 
 questions()

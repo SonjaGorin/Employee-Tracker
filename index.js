@@ -74,7 +74,10 @@ const addDepartment = async () => {
 };
 
 const addRole = async () => {
-    const newRole = await inquirer.prompt (
+    const departmentRows = await query("SELECT * FROM department");
+    const departmentIdNames = departmentRows.map(department => department.id)
+
+    const newRole = await inquirer.prompt ([
         {
             name: "newRoleTitle",
             type: "input",
@@ -89,15 +92,13 @@ const addRole = async () => {
             name: "department",
             type: "list",
             message: "Choose the department for this role:",
-            choices: (department) => {
-                department.name
-            }
+            choices: departmentIdNames
         }
-    );
-    const newRoleAdded = await query("INSERT INTO roles SET ?", {
+    ]);
+    const newRoleAdded = await query("INSERT INTO role SET ?", {
         title: newRole.newRoleTitle,
         salary: newRole.newSalary,
-        department: newRole.department
+        department_id: newRole.department
     });
 
 };

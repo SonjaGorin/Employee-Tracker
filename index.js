@@ -55,8 +55,8 @@ const viewAllEmployees = async () => {
         CONCAT(mgr.first_name, " ", mgr.last_name) AS manager
         FROM employee emp
         LEFT JOIN employee mgr ON emp.manager_id = mgr.id
-        INNER JOIN department ON emp.id = department.id
         INNER JOIN role ON emp.role_id = role.id 
+        INNER JOIN department ON role.department_id = department.id
         `);
     printTable(employees);
 };
@@ -117,6 +117,7 @@ const addEmployee = async () => {
     const managerChoices = employees.map(
         employee => ({value: employee.id, name: employee.manager})
     );
+    managerChoices.push({value: null, name: "No manager"})
 
     const newEmployee = await inquirer.prompt([
         {

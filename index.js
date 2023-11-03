@@ -27,6 +27,7 @@ const questions = async () => {
             await addRole();
             break;
         case "Add an employee":
+            await addEmployee();
             break;
         case "Update an employee role":
             break;
@@ -71,11 +72,14 @@ const addDepartment = async () => {
     const newDepartmentAdded = await query("INSERT INTO department SET ?", {
         name: newDepartment.newDepartmentInput
     });
+    console.log(`Added ${newDepartment.newDepartmentInput} to the detabase.`)
 };
 
 const addRole = async () => {
-    const departmentRows = await query("SELECT * FROM department");
-    const departmentIdNames = departmentRows.map(department => department.id)
+    const departments = await query("SELECT id, name FROM department")
+    const departmentChoices = departments.map(
+        department => ({value: department.id, name: department.name})
+    );
 
     const newRole = await inquirer.prompt ([
         {
@@ -92,15 +96,19 @@ const addRole = async () => {
             name: "department",
             type: "list",
             message: "Choose the department for this role:",
-            choices: departmentIdNames
+            choices: departmentChoices
         }
     ]);
-    const newRoleAdded = await query("INSERT INTO role SET ?", {
+    await query("INSERT INTO role SET ?", {
         title: newRole.newRoleTitle,
         salary: newRole.newSalary,
         department_id: newRole.department
     });
-
+    console.log(`Added ${newRole.newRoleTitle} to the detabase.`)
 };
+
+const addEmployee = async () => {
+    
+}
 
 questions()

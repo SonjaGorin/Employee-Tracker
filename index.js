@@ -108,7 +108,30 @@ const addRole = async () => {
 };
 
 const addEmployee = async () => {
-    
+    const newEmployee = await inquirer.prompt([
+        {
+            name: "newFirstName",
+            type: "input",
+            message: "What is the new employee's first name?"        
+        },
+        {
+            name: "newLastName",
+            type: "input",
+            message: "What is the new employee's last name?"
+        },
+        {
+            name: "newRole",
+            type: "list",
+            message: "Choose the role for this employee:",
+            choices:
+        },
+        {
+            name: "newManager",
+            type: "list",
+            message: "Choose the manager for this employee:",
+            choices:
+        }
+    ]);
 }
 
 questions()

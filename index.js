@@ -30,6 +30,7 @@ const questions = async () => {
             await addEmployee();
             break;
         case "Update an employee role":
+            await updateEmployeeRole();
             break;
     }
     questions();
@@ -150,6 +151,35 @@ const addEmployee = async () => {
         manager_id: newEmployee.newManager
     });
     console.log(`Added ${newEmployee.newFirstName} ${newEmployee.newLastName} to the detabase.`)
-}
+};
+
+const updateEmployeeRole = async () => {
+    const employees = await query('SELECT id, CONCAT(employee.first_name, " ", employee.last_name) AS full_name FROM employee');
+    const employeeChoices = employees.map(
+        employee => ({value: employee.id, name: employee.full_name})
+    );
+
+    const roles = await query("SELECT id, title, salary, department_id FROM role");
+    const roleChoices = roles.map(
+        role => ({value: role.id, name: role.title})
+    );
+
+    const newEmployeeRole = await inquirer.prompt([
+        {
+            name: "employeeUpdate",
+            type: "list",
+            message: "Which employee's role would you like to update?",
+            choices: employeeChoices
+        },
+        {
+            name: "updatedRole",
+            type: "list",
+            message: "Which role do you want to assign to the selected employee?",
+            choices: roleChoices
+        }
+    ]);
+    await query(`UPDATE employee SET role_id = ${newEmployeeRole.updatedRole} WHERE id = ${newEmployeeRole.employeeUpdate}`);
+    console.log("Employe updated.")
+};
 
 questions()
